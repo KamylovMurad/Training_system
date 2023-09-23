@@ -34,6 +34,6 @@ class View(models.Model):
 
     def save(self, *args, **kwargs):
         total_duration = self.lesson.duration
-        percentage_viewed = (self.viewed_time // total_duration) * 100
+        percentage_viewed = (self.viewed_time / total_duration) * 100
         self.viewed = percentage_viewed >= 80
         super(View, self).save(*args, **kwargs)
