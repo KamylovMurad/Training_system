@@ -6,10 +6,28 @@ from .models import Access, Lesson, Product, View
 
 
 class AllLessonView(ListAPIView):
+    """
+    View for listing all accessible lessons for a user.
+
+    This view returns a list of lessons that a user has access to.
+
+    Attributes:
+        serializer_class (serializers.Serializer): The serializer class for serializing the lesson data.
+        permission_classes (list): The list of permission classes that restrict access to authenticated users.
+
+    Methods:
+        get_queryset(self): Get the queryset of lessons accessible to the authenticated user.
+    """
     serializer_class = AllLessonSerializer
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
+        """
+        Get the queryset of lessons accessible to the authenticated user.
+
+        Returns:
+            queryset: A queryset of lessons that the user has access to.
+        """
         user = self.request.user
         accessible_products = Access.objects.filter(
             user=user,
@@ -23,10 +41,28 @@ class AllLessonView(ListAPIView):
 
 
 class ProductLessonView(ListAPIView):
+    """
+    View for listing lessons for a specific product.
+
+    This view returns a list of lessons for a specified product that the user has access to.
+
+    Attributes:
+        serializer_class (serializers.Serializer): The serializer class for serializing the lesson data.
+        permission_classes (list): The list of permission classes that restrict access to authenticated users.
+
+    Methods:
+        get_queryset(self): Get the queryset of lessons for the specified product accessible to the authenticated user.
+    """
     permission_classes = [IsAuthenticated]
     serializer_class = ProductSerializer
 
     def get_queryset(self):
+        """
+        Get the queryset of lessons for the specified product accessible to the authenticated user.
+
+        Returns:
+            queryset: A queryset of lessons for the specified product that the user has access to.
+        """
         user = self.request.user
         product = self.kwargs['product_name']
         product = get_object_or_404(Product, name=product)
@@ -42,9 +78,27 @@ class ProductLessonView(ListAPIView):
 
 
 class ProductStatsView(ListAPIView):
+    """
+    View for retrieving statistics about products.
+
+    This view returns statistics about each product on the platform, including total views, total duration,
+    total students, and acquisition percentage.
+
+    Attributes:
+        serializer_class (serializers.Serializer): The serializer class for serializing the product statistics.
+
+    Methods:
+        get_queryset(self): Get the queryset of product statistics.
+    """
     serializer_class = ProductStatsSerializer
 
     def get_queryset(self):
+        """
+        Get the queryset of product statistics.
+
+        Returns:
+            queryset: A queryset of product statistics.
+        """
         products = Product.objects.all()
         stats = []
 
