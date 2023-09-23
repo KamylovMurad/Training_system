@@ -20,7 +20,7 @@ class Lesson(models.Model):
     product = models.ManyToManyField(Product, related_name='lesson')
     name = models.CharField(max_length=50)
     url = models.URLField(default=None)
-    duration_seconds = models.PositiveIntegerField()
+    duration = models.PositiveIntegerField()
 
     def __str__(self):
         return self.name
@@ -31,3 +31,9 @@ class View(models.Model):
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
     viewed_time = models.PositiveIntegerField(default=0)
     viewed = models.BooleanField(default=False)
+
+    def save(self, *args, **kwargs):
+        total_duration = self.lesson.duration
+        percentage_viewed = (self.viewed_time // total_duration) * 100
+        self.viewed = percentage_viewed >= 80
+        super(View, self).save(*args, **kwargs)
