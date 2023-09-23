@@ -42,6 +42,7 @@ class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Lesson
         fields = ['id', 'name', 'url', 'duration', 'viewed', 'viewed_time', 'last_viewed']
+
     def get_viewed(self, lesson):
         user = self.context['request'].user
         try:
