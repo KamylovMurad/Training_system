@@ -29,7 +29,7 @@ class Lesson(models.Model):
 class View(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
-    last_viewed_date = models.DateField(auto_now_add=True)
+    last_viewed_date = models.DateField(blank=True, null=True)
     viewed_time = models.PositiveIntegerField(default=0)
     viewed = models.BooleanField(default=False)
 
