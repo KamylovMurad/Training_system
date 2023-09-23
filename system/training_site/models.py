@@ -14,3 +14,20 @@ class Access(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     access = models.BooleanField(default=True)
+
+
+class Lesson(models.Model):
+    product = models.ManyToManyField(Product, related_name='lesson')
+    name = models.CharField(max_length=50)
+    url = models.URLField(default=None)
+    duration_seconds = models.PositiveIntegerField()
+
+    def __str__(self):
+        return self.name
+
+
+class View(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
+    viewed_time = models.PositiveIntegerField(default=0)
+    viewed = models.BooleanField(default=False)
